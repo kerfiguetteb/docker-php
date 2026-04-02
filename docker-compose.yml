@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  php:
+    container_name: php-app
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: demo
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: myadmin
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_USER: demo
+      PMA_PASSWORD: demo
+    ports:
+      - "8081:80"
+volumes:
+  db_data:
